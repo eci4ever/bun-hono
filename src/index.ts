@@ -1,17 +1,12 @@
-import createApp from "../lib/create-app";
-import postRoute from "../routes/posts";
+import app from "./app";
 
-const app = createApp();
+const port = process.env.PORT || 3000;
 
-const routes = [postRoute] as const;
+// eslint-disable-next-line no-console
+console.log(`Server is running on http://localhost:${port}`);
 
-// Root endpoint
-app.get("/", (c) => {
-  return c.text("Hello Hono!");
+Bun.serve({
+  fetch: app.fetch,
+  hostname: "0.0.0.0",
+  port,
 });
-
-routes.forEach((route) => {
-  app.basePath("/api").route("/", route);
-});
-
-export default app;
