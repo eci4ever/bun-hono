@@ -1,10 +1,10 @@
 import { Hono } from "hono";
 import prisma from "../lib/db";
 
-const postRoutes = new Hono();
+const postRoute = new Hono();
 
 // GET /posts - Get all posts
-postRoutes.get("/posts", async (c) => {
+postRoute.get("/posts", async (c) => {
   try {
     const posts = await prisma.post.findMany({
       orderBy: { createdAt: "desc" },
@@ -16,7 +16,7 @@ postRoutes.get("/posts", async (c) => {
 });
 
 // GET /posts/:id - Get a specific post
-postRoutes.get("/posts/:id", async (c) => {
+postRoute.get("/posts/:id", async (c) => {
   try {
     const id = parseInt(c.req.param("id"));
 
@@ -39,7 +39,7 @@ postRoutes.get("/posts/:id", async (c) => {
 });
 
 // POST /posts - Create a new post
-postRoutes.post("/posts", async (c) => {
+postRoute.post("/posts", async (c) => {
   try {
     const body = await c.req.json();
     const { title, desc } = body;
@@ -62,7 +62,7 @@ postRoutes.post("/posts", async (c) => {
 });
 
 // PUT /posts/:id - Update a post
-postRoutes.put("/posts/:id", async (c) => {
+postRoute.put("/posts/:id", async (c) => {
   try {
     const id = parseInt(c.req.param("id"));
 
@@ -95,7 +95,7 @@ postRoutes.put("/posts/:id", async (c) => {
 });
 
 // DELETE /posts/:id - Delete a post
-postRoutes.delete("/posts/:id", async (c) => {
+postRoute.delete("/posts/:id", async (c) => {
   try {
     const id = parseInt(c.req.param("id"));
 
@@ -116,4 +116,4 @@ postRoutes.delete("/posts/:id", async (c) => {
   }
 });
 
-export default postRoutes;
+export default postRoute;

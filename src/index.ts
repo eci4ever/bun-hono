@@ -1,9 +1,9 @@
 import createApp from "../lib/create-app";
-import postRoutes from "../routes/posts";
+import postRoute from "../routes/posts";
 
 const app = createApp();
 
-const routes = [postRoutes] as const;
+const routes = [postRoute] as const;
 
 // Root endpoint
 app.get("/", (c) => {
