@@ -44,7 +44,7 @@ export const auth = betterAuth({
         moderator,
       },
       adminRoles: ["admin"],
-      adminUserIds: ["admin-000"],
+      adminUserIds: ["fMyPrAVPSv2ibAoE480xg2hi5N7NQu7C"],
     }),
     nextCookies(),
   ],
