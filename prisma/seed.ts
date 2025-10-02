@@ -25,6 +25,10 @@ async function seedUsersWithAuth() {
   ];
 
   try {
+    await prisma.account.deleteMany();
+    await prisma.session.deleteMany();
+    await prisma.user.deleteMany();
+
     for (const userData of users) {
       try {
         // Use better-auth's internal methods
