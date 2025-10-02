@@ -5,8 +5,8 @@ async function seedUsersWithAuth() {
 
   const users = [
     {
-      email: "nmfairus@gmail.com",
-      password: "P@ssw0rd",
+      email: "student@example.com",
+      password: "password123",
       name: "Student User",
       role: "user",
     },
