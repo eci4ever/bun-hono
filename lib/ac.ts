@@ -5,7 +5,7 @@ export type Role = "admin" | "user" | "moderator";
 export type PermissionMap = Record<string, string[]>;
 
 // Define role permissions statically
-const ROLE_PERMISSIONS: Record<Role, PermissionMap> = {
+export const ROLE_PERMISSIONS: Record<Role, PermissionMap> = {
   user: {
     user: ["read"],
     project: ["create", "read", "update"],
@@ -22,6 +22,12 @@ const ROLE_PERMISSIONS: Record<Role, PermissionMap> = {
     dashboard: ["read", "manage"],
     admin: ["full_access"],
   },
+};
+
+export const sesionPermissions: Record<Role, string[]> = {
+  admin: ["list", "revoke", "delete"],
+  moderator: [],
+  user: [],
 };
 
 // Server-side utility to get user with permissions
