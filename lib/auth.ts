@@ -1,9 +1,9 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { admin, customSession } from "better-auth/plugins";
+import { admin as adminPlugin } from "better-auth/plugins";
 import { nextCookies } from "better-auth/next-js";
-import { Role, ROLE_PERMISSIONS, sesionPermissions } from "./ac";
 import prisma from "./db";
+import { ac, admin, user } from "./permissions";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -30,28 +30,14 @@ export const auth = betterAuth({
     },
   },
   plugins: [
-    admin({
+    adminPlugin({
+      ac,
+      roles: {
+        admin,
+        user,
+      },
       adminRoles: ["admin"],
       adminUserIds: ["fMyPrAVPSv2ibAoE480xg2hi5N7NQu7C"],
-    }),
-    customSession(async ({ user, session }) => {
-      if (!user) {
-        return { user, session };
-      }
-      // Get user role, default to 'user' if not set
-      const userRole = ((user as any).role as Role) || "user";
-      const permissions = ROLE_PERMISSIONS[userRole] || ROLE_PERMISSIONS.user;
-
-      return {
-        user: {
-          ...user,
-          permissions,
-        },
-        session: {
-          ...session,
-          permissions: sesionPermissions[userRole],
-        },
-      };
     }),
     nextCookies(),
   ],
