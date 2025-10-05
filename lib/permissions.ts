@@ -11,10 +11,12 @@ export const statement = {
 export const ac = createAccessControl(statement);
 
 export const user = ac.newRole({
+  user: ["get", "update"],
   project: ["create"],
 });
 
 export const moderator = ac.newRole({
+  user: ["get", "update"],
   project: ["create", "update"],
   dashboard: ["read", "manage"],
 });
