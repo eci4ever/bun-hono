@@ -1,11 +1,11 @@
 import createApp from "../lib/create-app";
 import authRoute from "../routes/auth";
-// import postRoute from "../routes/posts";
+import postRoute from "../routes/posts";
 import { cors } from "hono/cors";
 
 const app = createApp();
 
-const routes = [authRoute] as const;
+const routes = [authRoute, postRoute] as const;
 
 app.use(
   "/api/*",
