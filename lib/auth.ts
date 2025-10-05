@@ -1,9 +1,17 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { admin as adminPlugin } from "better-auth/plugins";
+import { admin as adminPlugin, customSession } from "better-auth/plugins";
 import { nextCookies } from "better-auth/next-js";
 import prisma from "./db";
-import { ac, admin, user } from "./permissions";
+import { ac, admin, user, moderator } from "./permissions";
+
+export type Role = "admin" | "user" | "moderator";
+export type PermissionMap = Record<string, string[]>;
+export const sesionPermissions: Record<Role, string[]> = {
+  admin: ["list", "revoke", "delete"],
+  moderator: [],
+  user: [],
+};
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -34,10 +42,26 @@ export const auth = betterAuth({
       ac,
       roles: {
         admin,
+        moderator,
         user,
       },
       adminRoles: ["admin"],
       adminUserIds: ["fMyPrAVPSv2ibAoE480xg2hi5N7NQu7C"],
+    }),
+    customSession(async ({ session, user: userData }) => {
+      const role = ((userData as any).role as Role) || "";
+      const roleMap = { user, admin, moderator };
+      const currentRole = roleMap[role];
+      return {
+        session: {
+          ...session,
+          permissions: sesionPermissions[role] || [],
+        },
+        user: {
+          ...userData,
+          permissions: currentRole?.statements ?? {},
+        },
+      };
     }),
     nextCookies(),
   ],

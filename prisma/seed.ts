@@ -14,7 +14,7 @@ async function seedUsersWithAuth() {
       email: "teacher@example.com",
       password: "password123",
       name: "Teacher User",
-      role: "manager",
+      role: "moderator",
     },
     {
       email: "admin@example.com",
@@ -32,12 +32,16 @@ async function seedUsersWithAuth() {
     for (const userData of users) {
       try {
         // Use better-auth's internal methods
-        const result = await auth.api.signUpEmail({
+        const result = await auth.api.createUser({
           body: {
             email: userData.email,
             password: userData.password,
             name: userData.name,
-
+            role: userData.role as
+              | "user"
+              | "admin"
+              | ("user" | "admin")[]
+              | undefined,
             // Add custom fields if supported
           },
         });
